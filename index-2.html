@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101014">
+<title>MovieID — Prototipe</title>
+<style>
+:root{--bg:#101014;--panel:#1a1a22;--muted:#a8a8b5;--red:#e50914;--line:#2b2b35}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:#fff;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input{font:inherit}button{cursor:pointer}.topbar{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:14px;padding:14px 16px;background:#101014ed;border-bottom:1px solid #ffffff10;backdrop-filter:blur(12px)}
+.brand{font-size:23px;font-weight:900;letter-spacing:1px;white-space:nowrap}.brand span{color:var(--red)}.search{flex:1;min-width:0;background:#25252e;border:1px solid #383843;border-radius:12px;padding:10px 12px;color:white;outline:none}.search:focus{border-color:#888}.avatar{width:36px;height:36px;border-radius:50%;border:0;background:#383843;color:white;font-weight:800}
+main{max-width:1100px;margin:auto;padding:18px 16px 90px}.hero{min-height:250px;border-radius:22px;overflow:hidden;position:relative;padding:26px;display:flex;align-items:end;background:linear-gradient(115deg,#6d1828,#231d36 55%,#101014)}
+.hero:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 78% 20%,#ffcf8a55,transparent 28%),linear-gradient(0deg,#08080cf2,transparent 75%)}
+.hero-art{position:absolute;right:8%;top:10%;font-size:clamp(80px,18vw,160px);opacity:.22;transform:rotate(-9deg)}.hero-content{position:relative;max-width:560px}.eyebrow{color:#ffc7c9;font-size:11px;font-weight:800;letter-spacing:2px}.hero h1{font-size:clamp(30px,7vw,52px);line-height:1.02;margin:9px 0}.hero p{max-width:520px;color:#ddd;line-height:1.5;margin:8px 0 17px}.pill{border:0;border-radius:999px;padding:11px 16px;font-weight:750;background:var(--red);color:#fff}.pill.secondary{background:#ffffff1c;border:1px solid #ffffff24}.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:28px 0 13px}.section-head h2{font-size:20px;margin:0}.muted{color:var(--muted);font-size:13px}.chips{display:flex;gap:8px;overflow:auto;padding:1px 0 5px;scrollbar-width:none}.chip{border:1px solid #34343f;background:#202028;color:#ddd;border-radius:999px;padding:8px 14px;white-space:nowrap}.chip.active{background:#fff;color:#111;border-color:#fff}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.card{min-width:0;cursor:pointer}.poster{aspect-ratio: .72;border-radius:15px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,var(--c1),#101014 85%);border:1px solid #ffffff10}.poster:after{content:"";position:absolute;inset:35% 0 0;background:linear-gradient(transparent,#0009)}.poster-icon{font-size:clamp(48px,13vw,86px);opacity:.8;filter:drop-shadow(0 8px 20px #0008)}.tag{position:absolute;top:9px;left:9px;z-index:1;background:#0008;border:1px solid #ffffff24;border-radius:6px;padding:4px 7px;font-size:9px;font-weight:900;letter-spacing:1px}.rating{position:absolute;right:9px;top:9px;z-index:1;font-size:11px;background:#0009;border-radius:6px;padding:4px 7px}.card h3{font-size:15px;margin:9px 0 3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.card .meta{font-size:12px;color:var(--muted)}.empty{padding:35px 10px;text-align:center;color:var(--muted);grid-column:1/-1}.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:6;display:flex;justify-content:space-around;background:#15151bf2;border-top:1px solid var(--line);padding:9px 10px calc(9px + env(safe-area-inset-bottom));backdrop-filter:blur(12px)}.navbtn{background:none;border:0;color:#aaa;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;min-width:60px}.navbtn b{font-size:20px;font-weight:500}.navbtn.active{color:#fff}.navbtn.active b{color:#ff3942}
+.overlay{position:fixed;inset:0;z-index:10;background:#000b;display:none;align-items:end;justify-content:center;padding:0}.overlay.show{display:flex}.sheet{background:#17171f;border:1px solid #33333e;border-radius:22px 22px 0 0;width:100%;max-width:720px;max-height:92dvh;overflow:auto;position:relative}.close{position:absolute;right:14px;top:14px;z-index:2;border:0;background:#0009;color:#fff;border-radius:50%;width:38px;height:38px;font-size:23px}.detail-art{height:230px;display:flex;align-items:center;justify-content:center;font-size:100px;background:linear-gradient(130deg,var(--c1),#101014)}.detail-body{padding:20px}.detail-body h2{font-size:29px;margin:5px 0}.detail-body p{color:#d0d0d8;line-height:1.65}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.player-screen{aspect-ratio:16/9;background:radial-gradient(circle,#292936,#050507 72%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px}.play-circle{width:66px;height:66px;border-radius:50%;display:grid;place-items:center;background:var(--red);font-size:25px;margin-bottom:12px}.player-screen p{color:#bbb;max-width:400px;font-size:13px}.progress{height:5px;background:#45454e;margin:0 18px 18px;border-radius:8px;overflow:hidden}.progress span{display:block;width:0;height:100%;background:var(--red);transition:width .3s}.player-controls{display:flex;align-items:center;gap:12px;padding:0 18px 20px;color:#ccc;font-size:12px}.player-controls button{background:#2b2b35;color:white;border:0;border-radius:8px;padding:8px 11px}.toast{position:fixed;bottom:85px;left:50%;transform:translateX(-50%);background:#fff;color:#111;border-radius:12px;padding:11px 15px;font-size:13px;z-index:20;display:none;box-shadow:0 8px 30px #0006}
+@media(min-width:600px){main{padding-top:24px}.grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.hero{min-height:320px}.overlay{align-items:center;padding:20px}.sheet{border-radius:22px}.detail-art{height:280px}}
+@media(min-width:900px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}.topbar{padding-left:max(20px,calc((100vw - 1068px)/2));padding-right:max(20px,calc((100vw - 1068px)/2))}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">MOVIE<span>ID</span></div>
+  <input id="searchInput" class="search" type="search" placeholder="Cari film atau genre…" aria-label="Cari film">
+  <button class="avatar" id="profileBtn" aria-label="Profil">U</button>
+</header>
+<main>
+  <section class="hero">
+    <div class="hero-art" id="heroIcon">🎬</div>
+    <div class="hero-content">
+      <div class="eyebrow">MOVIEID ORIGINALS · DEMO</div>
+      <h1 id="heroTitle">Bayangan Kota</h1>
+      <p id="heroDesc">Saat rahasia lama kembali muncul, satu orang harus memilih antara diam atau melawan.</p>
+      <button class="pill" id="heroDetail">▶ Lihat detail</button>
+      <button class="pill secondary" id="heroPlay">Putar demo</button>
+    </div>
+  </section>
+  <div class="section-head"><h2>Jelajahi kategori</h2><span class="muted">Pilih genre</span></div>
+  <div class="chips" id="genreChips"></div>
+  <div class="section-head"><h2 id="catalogTitle">Pilihan untuk Anda</h2><span class="muted" id="resultCount"></span></div>
+  <section class="grid" id="movieGrid" aria-live="polite"></section>
+  <p class="muted" style="text-align:center;margin-top:28px">Prototipe demo • Judul dan data film hanya contoh</p>
+</main>
+<nav class="bottom-nav">
+  <button class="navbtn active" data-tab="home"><b>⌂</b>Beranda</button>
+  <button class="navbtn" data-tab="search"><b>⌕</b>Cari</button>
+  <button class="navbtn" data-tab="saved"><b>♡</b>Favorit</button>
+  <button class="navbtn" data-tab="profile"><b>☻</b>Profil</button>
+</nav>
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-label="Detail film">
+  <div class="sheet" id="sheet"><button class="close" id="closeSheet" aria-label="Tutup">×</button><div id="sheetContent"></div></div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const movies=[
+{id:1,title:"Bayangan Kota",genre:"Aksi",year:2025,duration:"1j 48m",rating:"8.1",icon:"🌃",c1:"#7c1e34",synopsis:"Seorang mantan petugas keamanan kembali ke kota asalnya dan menemukan konspirasi yang mengancam orang-orang terdekatnya."},
+{id:2,title:"Misi Terakhir",genre:"Thriller",year:2024,duration:"1j 56m",rating:"7.8",icon:"🎯",c1:"#174c70",synopsis:"Sebuah tim kecil berpacu dengan waktu untuk menyelesaikan misi berisiko tinggi."},
+{id:3,title:"Jejak Senja",genre:"Drama",year:2023,duration:"1j 39m",rating:"8.4",icon:"🌅",c1:"#8b4b1c",synopsis:"Dua saudara menyusuri kembali kenangan keluarga mereka di sebuah kota pesisir."},
+{id:4,title:"Ruang Tanpa Suara",genre:"Misteri",year:2025,duration:"1j 42m",rating:"7.6",icon:"🌙",c1:"#3c4945",synopsis:"Seorang jurnalis menyelidiki sebuah rumah tua yang menyimpan rahasia selama puluhan tahun."},
+{id:5,title:"Langit Biru",genre:"Keluarga",year:2022,duration:"1j 31m",rating:"8.0",icon:"☁️",c1:"#176c7c",synopsis:"Petualangan hangat tentang persahabatan, keberanian, dan menemukan rumah."},
+{id:6,title:"Garis Batas",genre:"Aksi",year:2024,duration:"1j 51m",rating:"7.9",icon:"🥋",c1:"#56336f",synopsis:"Seorang penyelidik harus memilih antara menjalankan perintah dan mengungkap kebenaran."},
+{id:7,title:"Orbit Terakhir",genre:"Fiksi Ilmiah",year:2025,duration:"2j 02m",rating:"8.2",icon:"🪐",c1:"#263a7d",synopsis:"Kru ekspedisi luar angkasa menerima sinyal misterius dari sisi gelap sebuah planet."},
+{id:8,title:"Dapur Tengah Malam",genre:"Komedi",year:2023,duration:"1j 34m",rating:"7.5",icon:"🍜",c1:"#8b3c20",synopsis:"Koki yang keras kepala dan timnya berusaha menyelamatkan restoran keluarga."},
+{id:9,title:"Hutan Berkabut",genre:"Misteri",year:2024,duration:"1j 45m",rating:"7.7",icon:"🌲",c1:"#24513b",synopsis:"Perjalanan singkat berubah menjadi teka-teki ketika jalan pulang menghilang."},
+{id:10,title:"Surat untuk Esok",genre:"Drama",year:2022,duration:"1j 41m",rating:"8.3",icon:"✉️",c1:"#80504c",synopsis:"Sebuah surat yang tertunda mempertemukan kembali dua sahabat lama."}
+];
+const genres=["Semua","Aksi","Drama","Thriller","Misteri","Keluarga","Fiksi Ilmiah","Komedi"];
+let activeGenre="Semua", activeTab="home", saved=new Set(), currentMovie=movies[0], demoTimer=null, demoProgress=0;
+const $=id=>document.getElementById(id);
+function filtered(){let q=$("searchInput").value.trim().toLocaleLowerCase("id");return movies.filter(m=>(activeGenre==="Semua"||m.genre===activeGenre)&&(activeTab!=="saved"||saved.has(m.id))&&(!q||m.title.toLocaleLowerCase("id").includes(q)||m.genre.toLocaleLowerCase("id").includes(q)));}
+function renderChips(){$("genreChips").innerHTML=genres.map(g=>`<button class="chip ${g===activeGenre?"active":""}" data-genre="${g}">${g}</button>`).join("");}
+function card(m){return `<article class="card" tabindex="0" role="button" aria-label="Detail ${m.title}" data-movie="${m.id}"><div class="poster" style="--c1:${m.c1}"><span class="tag">DEMO</span><span class="rating">★ ${m.rating}</span><span class="poster-icon">${m.icon}</span></div><h3>${m.title}</h3><div class="meta">${m.year} · ${m.genre} · ${m.duration}</div></article>`;}
+function render(){renderChips();let list=filtered();$("movieGrid").innerHTML=list.length?list.map(card).join(""):`<div class="empty">Tidak ada film yang cocok.<br><span class="muted">Coba kata kunci atau kategori lain.</span></div>`;$("resultCount").textContent=`${list.length} film`;$("catalogTitle").textContent=activeTab==="saved"?"Film Favorit":$("searchInput").value?"Hasil Pencarian":"Pilihan untuk Anda";document.querySelectorAll(".navbtn").forEach(b=>b.classList.toggle("active",b.dataset.tab===activeTab));}
+function openDetail(id){const m=movies.find(x=>x.id===Number(id));if(!m)return;currentMovie=m;$("sheetContent").innerHTML=`<div class="detail-art" style="--c1:${m.c1}">${m.icon}</div><div class="detail-body"><div class="eyebrow">FILM DEMO · ${m.year}</div><h2>${m.title}</h2><div class="muted">★ ${m.rating} &nbsp; · &nbsp; ${m.genre} &nbsp; · &nbsp; ${m.duration}</div><h3>Sinopsis</h3><p>${m.synopsis}</p><p class="muted">Konten ini hanya contoh. Tidak ada film penuh yang disertakan dalam prototipe.</p><div class="actions"><button class="pill" id="detailPlay">▶ Putar demo</button><button class="pill secondary" id="saveBtn">${saved.has(m.id)?"♥ Tersimpan":"♡ Tambah favorit"}</button></div></div>`;$("overlay").classList.add("show");$("detailPlay").onclick=()=>openPlayer(m);$("saveBtn").onclick=()=>{saved.has(m.id)?saved.delete(m.id):saved.add(m.id);openDetail(m.id);render();};}
+function openPlayer(m){currentMovie=m;clearInterval(demoTimer);demoProgress=0;$("sheetContent").innerHTML=`<div class="player-screen"><div class="play-circle">▶</div><strong>${m.title}</strong><p>PEMUTAR DEMO — tidak ada video film asli. Tekan “Simulasikan pemutaran” untuk melihat kontrol demo.</p></div><div class="progress"><span id="progressFill"></span></div><div class="player-controls"><button id="simulateBtn">▶ Simulasikan pemutaran</button><span id="playerTime">00:00 / 00:30</span><button id="stopBtn">■ Berhenti</button></div><div class="detail-body"><p class="muted">Untuk streaming nyata, aplikasi memerlukan URL video yang sah dan berizin.</p></div>`;$("simulateBtn").onclick=()=>{clearInterval(demoTimer);demoTimer=setInterval(()=>{demoProgress=Math.min(30,demoProgress+1);let fill=$("progressFill");let time=$("playerTime");if(fill)fill.style.width=(demoProgress/30*100)+"%";if(time)time.textContent=`00:${String(demoProgress).padStart(2,"0")} / 00:30`;if(demoProgress>=30)clearInterval(demoTimer);},1000);};$("stopBtn").onclick=()=>{clearInterval(demoTimer);demoProgress=0;let fill=$("progressFill");if(fill)fill.style.width="0%";let time=$("playerTime");if(time)time.textContent="00:00 / 00:30";};}
+function closeModal(){$("overlay").classList.remove("show");clearInterval(demoTimer);}
+$("movieGrid").addEventListener("click",e=>{const c=e.target.closest("[data-movie]");if(c)openDetail(c.dataset.movie);});
+$("movieGrid").addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.matches("[data-movie]")){e.preventDefault();openDetail(e.target.dataset.movie);}});
+$("genreChips").addEventListener("click",e=>{const b=e.target.closest("[data-genre]");if(b){activeGenre=b.dataset.genre;render();}});
+$("searchInput").addEventListener("input",render);
+$("closeSheet").onclick=closeModal;$("overlay").addEventListener("click",e=>{if(e.target===$("overlay"))closeModal();});
+$("heroDetail").onclick=()=>openDetail(1);$("heroPlay").onclick=()=>{openDetail(1);};
+$("profileBtn").onclick=()=>showToast("Profil demo: login belum terhubung.");
+document.querySelectorAll(".navbtn").forEach(b=>b.onclick=()=>{activeTab=b.dataset.tab;if(activeTab==="search"){$("searchInput").focus();}else if(activeTab==="profile"){showToast("Profil demo — login belum tersedia.");activeTab="home";}render();window.scrollTo({top:0,behavior:"smooth"});});
+let toastTimer;function showToast(t){$("toast").textContent=t;$("toast").style.display="block";clearTimeout(toastTimer);toastTimer=setTimeout(()=>$("toast").style.display="none",2400);}
+render();
+</script>
+</body>
+</html>
