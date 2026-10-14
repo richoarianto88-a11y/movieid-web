@@ -76,6 +76,29 @@ function loadSaved(){
     return new Set();
   }
 }
+  
+function loadSaved(){
+  try {
+    const data = JSON.parse(
+      localStorage.getItem("movieid_saved") || "[]"
+    );
+    return new Set(data.map(Number));
+  } catch (error) {
+    return new Set();
+  }
+}
+
+function loadSaved(){
+  try {
+    const data = JSON.parse(
+      localStorage.getItem("movieid_saved") || "[]"
+    );
+    return new Set(data.map(Number));
+  } catch (error) {
+    return new Set();
+  }
+}
+
 let activeGenre="Semua", activeTab="home", saved=loadSaved(), currentMovie=movies[0], demoTimer=null, demoProgress=0;
 
 const $=id=>document.getElementById(id);
