@@ -106,7 +106,52 @@ function filtered(){let q=$("searchInput").value.trim().toLocaleLowerCase("id");
 function renderChips(){$("genreChips").innerHTML=genres.map(g=>`<button class="chip ${g===activeGenre?"active":""}" data-genre="${g}">${g}</button>`).join("");}
 function card(m){return `<article class="card" tabindex="0" role="button" aria-label="Detail ${m.title}" data-movie="${m.id}"><div class="poster" style="--c1:${m.c1}"><span class="tag">DEMO</span><span class="rating">★ ${m.rating}</span><span class="poster-icon">${m.icon}</span></div><h3>${m.title}</h3><div class="meta">${m.year} · ${m.genre} · ${m.duration}</div></article>`;}
 function render(){renderChips();let list=filtered();$("movieGrid").innerHTML=list.length?list.map(card).join(""):`<div class="empty">Tidak ada film yang cocok.<br><span class="muted">Coba kata kunci atau kategori lain.</span></div>`;$("resultCount").textContent=`${list.length} film`;$("catalogTitle").textContent=activeTab==="saved"?"Film Favorit":$("searchInput").value?"Hasil Pencarian":"Pilihan untuk Anda";document.querySelectorAll(".navbtn").forEach(b=>b.classList.toggle("active",b.dataset.tab===activeTab));}
-function openDetail(id){const m=movies.find(x=>x.id===Number(id));if(!m)return;currentMovie=m;$("sheetContent").innerHTML=`<div class="detail-art" style="--c1:${m.c1}">${m.icon}</div><div class="detail-body"><div class="eyebrow">FILM DEMO · ${m.year}</div><h2>${m.title}</h2><div class="muted">★ ${m.rating} &nbsp; · &nbsp; ${m.genre} &nbsp; · &nbsp; ${m.duration}</div><h3>Sinopsis</h3><p>${m.synopsis}</p><p class="muted">Konten ini hanya contoh. Tidak ada film penuh yang disertakan dalam prototipe.</p><div class="actions"><button class="pill" id="detailPlay">▶ Putar demo</button><button class="pill secondary" id="saveBtn">${saved.has(m.id)?"♥ Tersimpan":"♡ Tambah favorit"}</button></div></div>`;$("overlay").classList.add("show");$("detailPlay").onclick=()=>openPlayer(m);
+
+function openDetail(id){
+  const m=movies.find(x=>x.id===Number(id));
+  if(!m)return;
+  currentMovie=m;
+
+  $("sheetContent").innerHTML=`
+    <div class="detail-art" style="--c1:${m.c1}">${m.icon}</div>
+    <div class="detail-body">
+      <div class="eyebrow">FILM DEMO · ${m.year}</div>
+      <h2>${m.title}</h2>
+      <div class="muted">★ ${m.rating} · ${m.genre} · ${m.duration}</div>
+      <h3>Sinopsis</h3>
+      <p>${m.synopsis}</p>
+      <p class="muted">Konten ini hanya contoh. Tidak ada film penuh yang disertakan dalam prototipe.</p>
+      <div class="actions">
+        <button class="pill" id="detailPlay">▶ Putar demo</button>
+        <button class="pill secondary" id="saveBtn">${saved.has(m.id)?"♥ Tersimpan":"♡ Tambah favorit"}</button>
+      </div>
+    </div>`;
+
+  $("overlay").classList.add("show");
+
+  $("detailPlay").onclick=()=>openPlayer(m);
+
+  $("saveBtn").onclick=()=>{
+    if(saved.has(m.id)){
+      saved.delete(m.id);
+    }else{
+      saved.add(m.id);
+    }
+
+    try{
+      localStorage.setItem(
+        "movieid_saved",
+        JSON.stringify([...saved])
+      );
+    }catch(error){
+      showToast("Favorit gagal disimpan.");
+      return;
+    }
+
+    openDetail(m.id);
+    render();
+  };
+}
 
 $("saveBtn").onclick=()=>{
   if(saved.has(m.id)){
