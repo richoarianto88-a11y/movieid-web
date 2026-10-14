@@ -107,12 +107,28 @@ function renderChips(){$("genreChips").innerHTML=genres.map(g=>`<button class="c
 function card(m){return `<article class="card" tabindex="0" role="button" aria-label="Detail ${m.title}" data-movie="${m.id}"><div class="poster" style="--c1:${m.c1}"><span class="tag">DEMO</span><span class="rating">★ ${m.rating}</span><span class="poster-icon">${m.icon}</span></div><h3>${m.title}</h3><div class="meta">${m.year} · ${m.genre} · ${m.duration}</div></article>`;}
 function render(){renderChips();let list=filtered();$("movieGrid").innerHTML=list.length?list.map(card).join(""):`<div class="empty">Tidak ada film yang cocok.<br><span class="muted">Coba kata kunci atau kategori lain.</span></div>`;$("resultCount").textContent=`${list.length} film`;$("catalogTitle").textContent=activeTab==="saved"?"Film Favorit":$("searchInput").value?"Hasil Pencarian":"Pilihan untuk Anda";document.querySelectorAll(".navbtn").forEach(b=>b.classList.toggle("active",b.dataset.tab===activeTab));}
 function openDetail(id){const m=movies.find(x=>x.id===Number(id));if(!m)return;currentMovie=m;$("sheetContent").innerHTML=`<div class="detail-art" style="--c1:${m.c1}">${m.icon}</div><div class="detail-body"><div class="eyebrow">FILM DEMO · ${m.year}</div><h2>${m.title}</h2><div class="muted">★ ${m.rating} &nbsp; · &nbsp; ${m.genre} &nbsp; · &nbsp; ${m.duration}</div><h3>Sinopsis</h3><p>${m.synopsis}</p><p class="muted">Konten ini hanya contoh. Tidak ada film penuh yang disertakan dalam prototipe.</p><div class="actions"><button class="pill" id="detailPlay">▶ Putar demo</button><button class="pill secondary" id="saveBtn">${saved.has(m.id)?"♥ Tersimpan":"♡ Tambah favorit"}</button></div></div>`;$("overlay").classList.add("show");$("detailPlay").onclick=()=>openPlayer(m);
+
 $("saveBtn").onclick=()=>{
-  saved.has(m.id) ? saved.delete(m.id) : saved.add(m.id);
-  localStorage.setItem("movieid_saved", JSON.stringify([...saved]));
+  if(saved.has(m.id)){
+    saved.delete(m.id);
+  } else {
+    saved.add(m.id);
+  }
+
+  try {
+    localStorage.setItem(
+      "movieid_saved",
+      JSON.stringify([...saved])
+    );
+  } catch(error) {
+    showToast("Favorit gagal disimpan di perangkat.");
+    return;
+  }
+
   openDetail(m.id);
   render();
 };
+
 
 function openPlayer(m){currentMovie=m;clearInterval(demoTimer);demoProgress=0;$("sheetContent").innerHTML=`<div class="player-screen"><div class="play-circle">▶</div><strong>${m.title}</strong><p>PEMUTAR DEMO — tidak ada video film asli. Tekan “Simulasikan pemutaran” untuk melihat kontrol demo.</p></div><div class="progress"><span id="progressFill"></span></div><div class="player-controls"><button id="simulateBtn">▶ Simulasikan pemutaran</button><span id="playerTime">00:00 / 00:30</span><button id="stopBtn">■ Berhenti</button></div><div class="detail-body"><p class="muted">Untuk streaming nyata, aplikasi memerlukan URL video yang sah dan berizin.</p></div>`;$("simulateBtn").onclick=()=>{clearInterval(demoTimer);demoTimer=setInterval(()=>{demoProgress=Math.min(30,demoProgress+1);let fill=$("progressFill");let time=$("playerTime");if(fill)fill.style.width=(demoProgress/30*100)+"%";if(time)time.textContent=`00:${String(demoProgress).padStart(2,"0")} / 00:30`;if(demoProgress>=30)clearInterval(demoTimer);},1000);};$("stopBtn").onclick=()=>{clearInterval(demoTimer);demoProgress=0;let fill=$("progressFill");if(fill)fill.style.width="0%";let time=$("playerTime");if(time)time.textContent="00:00 / 00:30";};}
 function closeModal(){$("overlay").classList.remove("show");clearInterval(demoTimer);}
