@@ -66,7 +66,18 @@ const movies=[
 {id:10,title:"Surat untuk Esok",genre:"Drama",year:2022,duration:"1j 41m",rating:"8.3",icon:"✉️",c1:"#80504c",synopsis:"Sebuah surat yang tertunda mempertemukan kembali dua sahabat lama."}
 ];
 const genres=["Semua","Aksi","Drama","Thriller","Misteri","Keluarga","Fiksi Ilmiah","Komedi"];
-let activeGenre="Semua", activeTab="home", saved=new Set(), currentMovie=movies[0], demoTimer=null, demoProgress=0;
+
+function loadSaved(){
+  try {
+    return new Set(
+      JSON.parse(localStorage.getItem("movieid_saved") || "[]").map(Number)
+    );
+  } catch {
+    return new Set();
+  }
+}
+let activeGenre="Semua", activeTab="home", saved=loadSaved(), currentMovie=movies[0], demoTimer=null, demoProgress=0;
+
 const $=id=>document.getElementById(id);
 function filtered(){let q=$("searchInput").value.trim().toLocaleLowerCase("id");return movies.filter(m=>(activeGenre==="Semua"||m.genre===activeGenre)&&(activeTab!=="saved"||saved.has(m.id))&&(!q||m.title.toLocaleLowerCase("id").includes(q)||m.genre.toLocaleLowerCase("id").includes(q)));}
 function renderChips(){$("genreChips").innerHTML=genres.map(g=>`<button class="chip ${g===activeGenre?"active":""}" data-genre="${g}">${g}</button>`).join("");}
